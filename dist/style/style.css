@@ -1,0 +1,29 @@
+/* Estilo para los botones */
+.custom-button {
+    width: 300px; 
+    height: 60px; 
+    color: white;
+    background-color: #343a40; 
+    border-radius: 10px; 
+    transition: background-color 0.3s; 
+}
+
+.custom-button:hover {
+    background-color: #495057; 
+}
+
+.d-flex {
+    justify-content: center; 
+    margin-top: 200px; 
+}
+
+.me-3 {
+    margin-right: 20px; 
+}
+
+.modal-header {
+    background-color: #737578; 
+    border-top: none; 
+    color: white;
+
+}
