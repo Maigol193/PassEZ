@@ -13,6 +13,7 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous">
         <link rel="stylesheet" href="style/style.css"/>
+        <link rel="stylesheet" href="style/buttons.css"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     </head>
 
@@ -39,9 +40,18 @@
 
         <main class="d-flex align-items-center justify-content-center full-height">
             <div class="d-flex flex-row align-items-center">
-                <button class="btn custom-button me-3" data-bs-toggle="modal" data-bs-target="#modal1">Solicitar Código QR</button>
-                <button class="btn custom-button me-3" data-bs-toggle="modal" data-bs-target="#modal2">Solicitar código númerico</button>
-                <button class="btn custom-button" data-bs-toggle="modal" data-bs-target="#modal3">NFC</button>
+                <div id="first-button" class="buttons">
+                    <video src="images/qr.mp4" width="200" height="150" autoplay loop muted type="video/mp4"></video>
+                    <button class="btn custom-button me-3" data-bs-toggle="modal" data-bs-target="#modal1">Solicitar Código QR</button>
+                </div>
+                <div id="second-button" class="buttons">
+                    <video src="images/code.mp4" width="200" height="150" autoplay loop muted type="video/mp4"></video>
+                    <button class="btn custom-button me-3" data-bs-toggle="modal" data-bs-target="#modal2">Solicitar código númerico</button>
+                </div>
+                <div id="third-button" class="buttons">
+                    <video src="images/nfc.mp4" width="200" height="150" autoplay loop muted type="video/mp4"></video>
+                    <button class="btn custom-button" data-bs-toggle="modal" data-bs-target="#modal3">NFC</button>
+                </div>
             </div>
         </main>
         

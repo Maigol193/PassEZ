@@ -1,0 +1,11 @@
+.buttons {
+    height: 250px; /* Adjust the height as needed */
+    display: flex;
+    flex-direction: column;
+    margin-top: -180px; /* Move the div up */
+    align-items: center;
+    justify-content: space-between; /* Ensures spacing between video and button */
+    padding: 10px; /* Optional: add padding to give more space */
+}
+
+
