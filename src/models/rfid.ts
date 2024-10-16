@@ -1,0 +1,10 @@
+const { Schema, model, SchemaTypes } = require('mongoose');
+
+const rfidSchema = new Schema({
+    userId: { type: SchemaTypes.String, required: true },
+    rfidTag: { type: SchemaTypes.String, required: true },
+    createdAt: { type: SchemaTypes.Date, default: Date.now, expires: '1h' } // Expira en 1 hora
+});
+
+const rfid = model('rfid', rfidSchema);
+export default rfid;
