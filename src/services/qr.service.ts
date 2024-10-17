@@ -1,14 +1,25 @@
 import QRCode from 'qrcode';
-import QRModel from '../models/qr';
+import { Request, Response, NextFunction } from 'express';
 
-export const createQR = async (userId: string) => {
-    const qrCode = await QRCode.toDataURL(userId);
-    const newQR = new QRModel({ userId, qrCode });
-    await newQR.save();
-    return qrCode;
+// Middleware para generar código QR
+const generateQRCode = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { visitId } = req.body; // Recibirás el visitId o algún dato relevante del visitante
+        
+        if (!visitId) {
+            return res.status(400).json({ message: 'visitId is required' });
+        }
+
+        // Generar el QR code en formato de URL
+        const qrData = await QRCode.toDataURL(visitId);
+
+        // Aquí puedes añadir el QR generado a `req` para pasarlo a un controlador
+        req.body.qrCode = qrData;
+
+        next(); // Continuar al siguiente middleware o controlador
+    } catch (error) {
+        res.status(500).json({ message: 'Error generating QR code', error });
+    }
 };
 
-export const validateQR = async (qrCode: string) => {
-    const qr = await QRModel.findOne({ qrCode });
-    return qr ? true : false;
-};
+export default generateQRCode;

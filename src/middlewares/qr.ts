@@ -1,19 +1,27 @@
+import QRCode from 'qrcode';
 import { Request, Response, NextFunction } from 'express';
-import QR from '../models/qr'; // Asegúrate de importar el modelo correcto
 
-const validateQR = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const qrCode = req.body.qrCode; // Asegúrate de que el código QR esté en el cuerpo de la solicitud
-        const isValid = await QR.findOne({ code: qrCode }); // Busca el código QR en la base de datos
+class QRMiddleware {
+    generateQRCode(req: Request, res: Response, next: NextFunction) {
+        const { visitId } = req.body;
 
-        if (isValid) {
-            next(); // Si es válido, continúa al siguiente middleware o controlador
-        } else {
-            res.status(400).json({ message: 'QR inválido' });
+        if (!visitId) {
+            res.status(400).json({ message: 'visitId es requerido' });
         }
-    } catch (error) {
-        res.status(500).json({ error: 'Error validando el QR' });
-    }
-};
 
-export default validateQR;
+        // Genera el código QR
+        QRCode.toDataURL(visitId)
+            .then((qrData) => {
+                // Agregar el código QR generado al cuerpo de la solicitud
+                req.body.qrCode = qrData;
+                next(); // Continuar hacia el controlador
+            })
+            .catch(() => {
+                // Si ocurre un error, responde con un mensaje adecuado
+                res.status(500).json({ message: 'Error al generar el código QR' });
+            });
+    }
+}
+
+const qrMiddleware = new QRMiddleware();
+export default qrMiddleware;
