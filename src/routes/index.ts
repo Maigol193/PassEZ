@@ -2,6 +2,7 @@ import { Router } from 'express';
 import controllers from '../controllers/index';
 import qrMiddleware from '../middlewares/qr';
 import numpadMiddleware from '../middlewares/numpad';
+import RFIDMiddleware from '../middlewares/rfid';
 const router = Router();
 
 router.get('', (req, res) => {
@@ -19,5 +20,11 @@ router.post('/create-code', numpadMiddleware.generateNumericCode, controllers.nu
 
 // Ruta para validar un código numérico
 router.post('/validate-code', controllers.numpadController.validateCode);
+
+// Ruta para crear un nuevo codigo RFID
+router.post('/create-rfid', RFIDMiddleware.generateRFIDTag, controllers.rfidController.createRFID);
+
+// Ruta para validar un código RFID
+router.post('/validate-rfid', controllers.rfidController.validateRFID);
 
 export default router;

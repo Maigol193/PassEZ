@@ -7,6 +7,7 @@ class NumpadMiddleware {
 
         if (!visitId) {
             res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'visitId es requerido' });
+            return;
         }
 
         // Generar un código numérico de 6 dígitos
