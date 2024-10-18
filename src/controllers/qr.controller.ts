@@ -6,7 +6,7 @@ import { QR as QRType } from "../types/qr";
 class QRControllers {
     // Crear una nueva entrada con QR
     createVisit(req: Request, res: Response) {
-        const { userId, qrCode } = req.body;
+        const { userId, qrCode } = req.body; //userId y qrCode son los campos que recibe el body en la consulta a la ruta
 
         if (!userId || !qrCode) {
             res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y qrCode son requeridos' });

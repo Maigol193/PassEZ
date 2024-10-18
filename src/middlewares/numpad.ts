@@ -1,19 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import Numpad from '../models/numpad'; // Asegúrate de importar el modelo correcto
+import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 
-const validateNumpad = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const code = req.body.code; // Asegúrate de que el código numérico esté en el cuerpo de la solicitud
-        const isValid = await Numpad.findOne({ code: code }); // Busca el código en la base de datos
+class NumpadMiddleware {
+    generateNumericCode(req: Request, res: Response, next: NextFunction) {
+        const { visitId } = req.body; //visitId es el key o campo que recibe el body en la consulta a la ruta
 
-        if (isValid) {
-            next(); // Si es válido, continúa al siguiente middleware o controlador
-        } else {
-            res.status(400).json({ message: 'Código numérico inválido' });
+        if (!visitId) {
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'visitId es requerido' });
         }
-    } catch (error) {
-        res.status(500).json({ error: 'Error validando el código numérico' });
-    }
-};
 
-export default validateNumpad;
+        // Generar un código numérico de 6 dígitos
+        const numericCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Agregar el código generado al cuerpo de la solicitud
+        req.body.code = numericCode;
+        next();  // Continuar hacia el controlador
+    }
+}
+
+const numpadMiddleware = new NumpadMiddleware();
+export default numpadMiddleware;
