@@ -26,25 +26,31 @@ class rfidController{
     }
 
     //Validar un código RFID
-    validateRFID(req: Request, res: Response){
-        const {rfidTag} = req.body;
-
-        if(!rfidTag){
-            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({message: 'Código RFID es requerido'});
-            return;
+    validateRFID(req: Request, res: Response) {
+        const { rfidTag } = req.body;
+    
+        if (!rfidTag) {
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'Código RFID es requerido' });
         }
-
-        rfid.findOne({rfidTag}).then((rfid: RFIDType | null) => {
-            if(!rfid){
-                res.status(HTTP_STATUS_CODES.NOT_FOUND).json({message: 'Código RFID no válido o no encontrado'});
-                return;
+    
+        rfid.findOne({ rfidTag }).then((rfidEntry: RFIDType | null) => {
+            if (!rfidEntry) {
+                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID no válido o no encontrado' });
             }
-
-            res.status(HTTP_STATUS_CODES.SUCCESS).json({message: 'Código RFID válido, acceso permitido'});
+    
+            const currentTime = new Date();
+            if (currentTime < rfidEntry.createdAt) {
+                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID ha expirado' });
+            }
+    
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({
+                message: 'Código RFID válido, acceso permitido',
+                userId: rfidEntry.userId // Incluyendo userId en la respuesta
+            });
         }).catch(() => {
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({message: 'Error al validar el código RFID'});
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar el código RFID' });
         });
-    }
+    }    
 }
 
 const controller = new rfidController();

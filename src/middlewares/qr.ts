@@ -4,7 +4,7 @@ import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 
 class QRMiddleware {
     generateQRCode(req: Request, res: Response, next: NextFunction) {
-        const { visitId } = req.body; //visitId es el key o campo que recibe el body en la consulta a la ruta
+        const { visitId } = req.body; // visitId es el key o campo que recibe el body en la consulta a la ruta
 
         if (!visitId) {
             res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'visitId es requerido' });

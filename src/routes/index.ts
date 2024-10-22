@@ -1,9 +1,14 @@
 import { Router } from 'express';
+import cors from 'cors';
 import controllers from '../controllers/index';
 import qrMiddleware from '../middlewares/qr';
 import numpadMiddleware from '../middlewares/numpad';
 import RFIDMiddleware from '../middlewares/rfid';
 const router = Router();
+
+router.use(cors({
+    origin: 'http://127.0.0.1:5500', // Permitir solicitudes desde este origen
+}));
 
 router.get('', (req, res) => {
     res.send('api works');

@@ -18,11 +18,16 @@ class NumpadControllers {
             code: code,
         });
 
-        newNumpad.save().then(() => {
-            res.status(HTTP_STATUS_CODES.CREATED).json({ message: 'Código numérico creado con éxito' });
-        }).catch(() => {
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la entrada de código numérico' });
-        });
+        newNumpad.save()
+            .then(() => {
+                res.status(HTTP_STATUS_CODES.CREATED).json({
+                    message: 'Código numérico creado con éxito',
+                    code: code // Aquí se incluye el código en la respuesta
+                });
+            })
+            .catch(() => {
+                res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la entrada de código numérico' });
+            });
     }
 
     // Validar un código numérico

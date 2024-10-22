@@ -8,6 +8,17 @@
     transition: background-color 0.3s; 
 }
 
+#qrCodeImage {
+    max-width: 300px; /* Ajusta el ancho máximo según sea necesario */
+    height: auto; /* Mantiene la relación de aspecto */
+    margin: auto; /* Centrar imagen */
+}
+
+#numericCodeDisplay {
+    font-size: 2em; /* Ajusta el tamaño de la fuente según sea necesario */
+    font-weight: bold; /* Hacer el texto más llamativo */
+}
+
 .custom-button:hover {
     background-color: #495057; 
 }
