@@ -6,23 +6,22 @@ import { Numpad as NumpadType } from "../types/numpad";
 class NumpadControllers {
     // Crear una nueva entrada con código numérico
     createCode(req: Request, res: Response) {
-        const { userId, code } = req.body;
+        // Generar un código numérico de 6 dígitos
+        const numericCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        if (!userId || !code) {
-            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y code son requeridos' });
-            return;
-        }
-
+        const timestamp = new Date().getTime();
+        const visitId = `visit_${timestamp.toString()}`;
+        // Crear el nuevo código en la base de datos
         const newNumpad = new Numpad({
-            userId: userId,
-            code: code,
+            userId: visitId,  // Generar un ID temporal o personalizado para la entrada
+            code: numericCode,
         });
 
         newNumpad.save()
             .then(() => {
                 res.status(HTTP_STATUS_CODES.CREATED).json({
                     message: 'Código numérico creado con éxito',
-                    code: code // Aquí se incluye el código en la respuesta
+                    code: numericCode  // Devuelve el código generado en la respuesta
                 });
             })
             .catch(() => {
@@ -30,7 +29,7 @@ class NumpadControllers {
             });
     }
 
-    // Validar un código numérico
+    // Validar y eliminar un código numérico
     validateCode(req: Request, res: Response) {
         const { code } = req.body;
 
@@ -39,15 +38,16 @@ class NumpadControllers {
             return;
         }
 
-        Numpad.findOne({ code }).then((numpad: NumpadType | null) => {
+        // Buscar y eliminar el código si existe
+        Numpad.findOneAndDelete({ code }).then((numpad: NumpadType | null) => {
             if (!numpad) {
                 res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código numérico no válido o no encontrado' });
                 return;
             }
 
-            res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'Código numérico válido, acceso permitido' });
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'Código numérico válido, acceso permitido y eliminado' });
         }).catch(() => {
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar el código numérico' });
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar y eliminar el código numérico' });
         });
     }
 }

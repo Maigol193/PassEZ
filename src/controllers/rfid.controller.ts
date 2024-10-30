@@ -44,7 +44,7 @@ class rfidController{
                 return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID ha expirado' });
             }
 
-            res.status(HTTP_STATUS_CODES.OK).json({
+            res.status(HTTP_STATUS_CODES.SUCCESS).json({
                 message: 'Código RFID y userId válidos, acceso permitido',
                 userId: rfidEntry.userId // Incluyendo userId en la respuesta
             });
