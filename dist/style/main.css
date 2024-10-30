@@ -90,7 +90,7 @@ section, summary, time, mark, audio, video {
 		top: -1em;
 		vertical-align: middle;
 		width: 90%;
-	}
+		}
 
 		#header h1 {
 			font-size: 7em;
@@ -196,6 +196,12 @@ section, summary, time, mark, audio, video {
 				#header nav a span {
 					display: none;
 				}
+	
+#main {
+	display:flex;
+	justify-content: center;
+	align-items: center;
 
+}
 
 				
