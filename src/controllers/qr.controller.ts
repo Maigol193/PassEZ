@@ -44,17 +44,17 @@ class QRControllers {
         }
 
         // Encontrar y eliminar el QR si existe
-        QR.findOneAndDelete({ qrCode })
+        QR.findOne({ qrCode })
             .then((qr: QRType | null) => {
                 if (!qr) {
                     res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'QR Code no válido o no encontrado' });
                     return;
                 }
 
-                res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'QR Code válido, acceso permitido y eliminado' });
+                res.status(HTTP_STATUS_CODES.SUCCESS).json({ message: 'QR Code válido, acceso permitido' });
             })
             .catch(() => {
-                res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar y eliminar el QR Code' });
+                res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar el QR Code' });
             });
     }
 }
