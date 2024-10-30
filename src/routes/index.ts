@@ -22,10 +22,10 @@ router.post('/create-code', controllers.numpadController.createCode);
 // Ruta para validar un código numérico
 router.post('/validate-code', controllers.numpadController.validateCode);
 
-// Ruta para crear un nuevo codigo RFID
-router.post('/create-rfid', RFIDMiddleware.generateRFIDTag, controllers.rfidController.createRFID);
+// Ruta para crear una nueva entrada con código RFID
+router.post('/create-rfid', controllers.rfidController.createRFID);
 
-// Ruta para validar un código RFID
+// Ruta para validar y eliminar un código RFID
 router.post('/validate-rfid', controllers.rfidController.validateRFID);
 
 export default router;
