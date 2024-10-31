@@ -3,29 +3,34 @@ import { HTTP_STATUS_CODES } from '../types/http-status-codes';
 import rfid from '../models/rfid';
 import { RFID as RFIDType } from "../types/rfid";
 
-class rfidController{
+class rfidController {
     // Crear nueva entrada con código RFID
     createRFID(req: Request, res: Response) {
-        const { userId, rfidTag } = req.body;
+        const { userId, uid } = req.body;
 
-        if (!userId || !rfidTag) {
-            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y rfidTag son requeridos' });
+        if (!userId || !uid) {
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y uid son requeridos' });
             return;
         }
 
+        // Generar un tag RFID único
+        const rfidTag = Math.random().toString(36).substring(2, 12);
+
+        // Crear una nueva entrada en la base de datos
         const newRFID = new rfid({
             userId: userId,
             rfidTag: rfidTag,
+            uid: uid,
         });
 
         newRFID.save().then(() => {
-            res.status(HTTP_STATUS_CODES.CREATED).json({ message: 'Código RFID creado con éxito' });
-        }).catch(() => {
-            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la entrada de código RFID' });
+            res.status(HTTP_STATUS_CODES.CREATED).json({ message: 'Código RFID creado con éxito', rfidTag });
+        }).catch((error) => {
+            res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al guardar en la base de datos', error });
         });
     }
 
-    //Validar un código RFID
+    // Validar un código RFID
     validateRFID(req: Request, res: Response) {
         const { rfidTag, userId } = req.body;
 
@@ -44,14 +49,14 @@ class rfidController{
                 return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID ha expirado' });
             }
 
-            res.status(HTTP_STATUS_CODES.SUCCESS).json({
+            res.status(HTTP_STATUS_CODES.OK).json({
                 message: 'Código RFID y userId válidos, acceso permitido',
                 userId: rfidEntry.userId // Incluyendo userId en la respuesta
             });
         }).catch(() => {
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar el código RFID' });
         });
-    }   
+    }
 }
 
 const controller = new rfidController();
