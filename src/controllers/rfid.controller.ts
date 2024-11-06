@@ -39,16 +39,11 @@ class rfidController {
 
         rfid.findOne({ rfidTag }).then((rfidEntry: RFIDType | null) => {
             if (!rfidEntry) {
-                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID o userId no válido o no encontrado' });
-            }
-
-            const currentTime = new Date();
-            if (currentTime > rfidEntry.createdAt) {
-                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID ha expirado' });
+                return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID no válido o no encontrado' });
             }
 
             res.status(HTTP_STATUS_CODES.SUCCESS).json({
-                message: 'Código RFID y userId válidos, acceso permitido',
+                message: 'Código RFID, acceso permitido',
                 userId: rfidEntry.userId // Incluyendo userId en la respuesta
             });
         }).catch(() => {
