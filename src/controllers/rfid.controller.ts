@@ -6,21 +6,19 @@ import { RFID as RFIDType } from "../types/rfid";
 class rfidController {
     // Crear nueva entrada con código RFID
     createRFID(req: Request, res: Response) {
-        const { userId, uid } = req.body;
+        // const { userId, uid } = req.body;
 
-        if (!userId || !uid) {
-            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y uid son requeridos' });
-            return;
-        }
+        // if (!userId || !uid) {
+        //     res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'userId y uid son requeridos' });
+        //     return;
+        // }
 
         // Generar un tag RFID único
         const rfidTag = Math.random().toString(36).substring(2, 12);
 
         // Crear una nueva entrada en la base de datos
         const newRFID = new rfid({
-            userId: userId,
-            rfidTag: rfidTag,
-            uid: uid,
+            rfidTag: rfidTag
         });
 
         newRFID.save().then(() => {
