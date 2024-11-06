@@ -1,9 +1,9 @@
 const { Schema, model, SchemaTypes } = require('mongoose');
 
 const rfidSchema = new Schema({
-    userId: { type: SchemaTypes.String, required: true },
+    userId: { type: SchemaTypes.String},
     rfidTag: { type: SchemaTypes.String, required: true },
-    createdAt: { type: SchemaTypes.Date, default: Date.now } // La etiqueta RFID expira en 1 hora
+    createdAt: { type: SchemaTypes.Date, default: Date.now }
 });
 
 const rfid = model('rfid', rfidSchema);
