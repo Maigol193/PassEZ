@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import cors from 'cors';
 import controllers from '../controllers/index';
-import RFIDMiddleware from '../middlewares/rfid';
 const router = Router();
 
 router.use(cors());
