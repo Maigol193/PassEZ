@@ -14,7 +14,7 @@ class rfidController {
         // }
 
         // Generar un tag RFID único
-        const rfidTag = Math.random().toString(36).substring(2, 13);
+        const rfidTag = Math.random().toString(36).substring(2, 12);
 
         // Crear una nueva entrada en la base de datos
         const newRFID = new rfid({
