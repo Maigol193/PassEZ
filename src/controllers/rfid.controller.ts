@@ -30,14 +30,14 @@ class rfidController {
 
     // Validar un código RFID
     validateRFID(req: Request, res: Response) {
-        const { rfidTag, userId } = req.body;
+        const { rfidTag } = req.body;
 
-        if (!rfidTag || !userId) {
+        if (!rfidTag) {
             res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'Código RFID y userId son requeridos' });
             return;
         }
 
-        rfid.findOne({ rfidTag, userId }).then((rfidEntry: RFIDType | null) => {
+        rfid.findOne({ rfidTag }).then((rfidEntry: RFIDType | null) => {
             if (!rfidEntry) {
                 return res.status(HTTP_STATUS_CODES.NOT_FOUND).json({ message: 'Código RFID o userId no válido o no encontrado' });
             }
