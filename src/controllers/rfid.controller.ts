@@ -33,7 +33,7 @@ class rfidController {
         const { rfidTag } = req.body;
 
         if (!rfidTag) {
-            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'Código RFID y userId son requeridos' });
+            res.status(HTTP_STATUS_CODES.BAD_REQUEST).json({ message: 'Código RFID son requeridos' });
             return;
         }
 
@@ -43,8 +43,7 @@ class rfidController {
             }
 
             res.status(HTTP_STATUS_CODES.SUCCESS).json({
-                message: 'Código RFID, acceso permitido',
-                userId: rfidEntry.userId // Incluyendo userId en la respuesta
+                message: 'Código RFID, acceso permitido'
             });
         }).catch(() => {
             res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al validar el código RFID' });

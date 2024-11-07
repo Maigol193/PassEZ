@@ -5,31 +5,30 @@ import QR from '../models/qr';
 import { QR as QRType } from "../types/qr";
 
 class QRControllers {
-    // Crear una nueva entrada con QR sin necesidad de recibir datos en el cuerpo
+    // Crear una nueva entrada con QR, almacenando solo el visitId
     createVisit(req: Request, res: Response) {
-        // Generar el código QR de forma automática
         const timestamp = new Date().getTime();
-        const visitId = `visit_${timestamp.toString()}`;  // Ejemplo: generar un ID único basado en el tiempo o algún otro dato
+        const visitId = `visit_${timestamp.toString()}`;  // Generar un ID único basado en el tiempo
+
+        // Generar el código QR a partir del visitId
         QRCode.toDataURL(visitId)
             .then((qrData) => {
-                // Crear la nueva entrada QR en la base de datos con el código generado
+                // Crear la nueva entrada en la base de datos con solo el visitId
                 const newQR = new QR({
-                    userId: visitId,  // Almacena el visitId generado
-                    qrCode: qrData
+                    userId: visitId,
+                    qrCode: visitId // Almacena el visitId, no el Base64
                 });
 
-                // Guardar en la base de datos y responder al cliente
                 newQR.save().then(() => {
                     res.status(HTTP_STATUS_CODES.CREATED).json({
                         message: 'QR creado con éxito',
-                        qrCode: qrData // Devuelve el código QR generado
+                        qrCode: qrData // Envía el código QR como una imagen en Base64 para el cliente
                     });
                 }).catch(() => {
                     res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al crear la entrada QR' });
                 });
             })
             .catch(() => {
-                // Responde con un error si falla la generación del QR
                 res.status(HTTP_STATUS_CODES.SERVER_ERROR).json({ message: 'Error al generar el código QR' });
             });
     }
@@ -43,7 +42,7 @@ class QRControllers {
             return;
         }
 
-        // Encontrar y eliminar el QR si existe
+        // Buscar y eliminar el QR si existe usando solo el visitId
         QR.findOne({ qrCode })
             .then((qr: QRType | null) => {
                 if (!qr) {
